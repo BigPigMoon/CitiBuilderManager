@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Engine.Interfaces;
+using Microsoft.Xna.Framework.Content;
 
 namespace Engine.Services;
 

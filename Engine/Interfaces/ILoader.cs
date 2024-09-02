@@ -1,4 +1,4 @@
-﻿namespace Engine.Services;
+﻿namespace Engine.Interfaces;
 
 public interface ILoader
 {

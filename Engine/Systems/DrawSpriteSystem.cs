@@ -1,7 +1,7 @@
 ﻿using Arch.Core;
 using Engine.Attributes;
 using Engine.Components;
-using Engine.Services;
+using Engine.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,17 +9,11 @@ namespace Engine.Systems;
 
 [AutoInject]
 [OnDraw]
-public sealed class DrawSpriteSystem : ISystem<GameTime>
+public sealed class DrawSpriteSystem(World world, IDrawer drawer) : ISystem<GameTime>
 {
     private readonly QueryDescription _spriteQuery = new QueryDescription().WithAll<Sprite, Transform2D>();
-    private readonly IDrawer _drawer;
-    private readonly World _world;
-
-    public DrawSpriteSystem(World world, IDrawer drawer)
-    {
-        _world = world;
-        _drawer = drawer;
-    }
+    private readonly IDrawer _drawer = drawer;
+    private readonly World _world = world;
 
     public void Run(in GameTime state)
     {
