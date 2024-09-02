@@ -4,8 +4,10 @@ using Engine.Interfaces;
 using Engine.Services;
 using Engine.Systems;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NLog.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +32,11 @@ public class Application : Game
 
     private void ConfigureServices(IServiceCollection services)
     {
+        services.AddLogging(builder =>
+        {
+            builder.AddNLog();
+        });
+
         services.AddSingleton(World.Create());
 
         services.AddSingleton<IWindowManager>(new WindowManager(GraphicsDevice));

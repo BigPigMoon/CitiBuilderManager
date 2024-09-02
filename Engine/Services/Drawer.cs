@@ -4,14 +4,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Engine.Services;
 
-public sealed class Drawer : IDrawer
+public sealed class Drawer(SpriteBatch spriteBatch) : IDrawer
 {
-    private SpriteBatch _spriteBatch;
-
-    public Drawer(SpriteBatch spriteBatch)
-    {
-        _spriteBatch = spriteBatch;
-    }
+    private readonly SpriteBatch _spriteBatch = spriteBatch;
 
     public void Begin()
     {

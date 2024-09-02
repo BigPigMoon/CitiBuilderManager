@@ -3,14 +3,9 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Engine.Services;
 
-public class Loader : ILoader
+public class Loader(ContentManager content) : ILoader
 {
-    private readonly ContentManager _content;
-
-    public Loader(ContentManager content)
-    {
-        _content = content;
-    }
+    private readonly ContentManager _content = content;
 
     public T Load<T>(string assetName)
     {
