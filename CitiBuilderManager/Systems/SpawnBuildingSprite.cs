@@ -1,3 +1,4 @@
+using System;
 using Arch.Core;
 using Arch.Core.Extensions;
 using CitiBuilderManager.Components;
@@ -5,28 +6,20 @@ using CitiBuilderManager.Services;
 using Engine.Attributes;
 using Engine.Bundles;
 using Engine.Components;
-using Engine.Services;
+using Engine.Interfaces;
 using Engine.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace CitiBuilderManager.Systems;
 
 [AutoInject]
 [OnStartup]
-public class SpawnBuildingSprite : ISystem<int>
+public class SpawnBuildingSprite(World world, ILoader loader, IWindowManager window) : ISystem<int>
 {
-    private readonly ILoader _loader;
-    private readonly IWindowManager _window;
-    private readonly World _world;
-
-    public SpawnBuildingSprite(World world, ILoader loader, IWindowManager window)
-    {
-        _world = world;
-        _window = window;
-        _loader = loader;
-    }
+    private readonly ILoader _loader = loader;
+    private readonly IWindowManager _window = window;
+    private readonly World _world = world;
 
     public void Run(in int state)
     {
@@ -52,7 +45,7 @@ public class SpawnBuildingSprite : ISystem<int>
         }
     }
 
-    private Vector2 GetRandomDirection(Random rand)
+    private static Vector2 GetRandomDirection(Random rand)
     {
         float x = (float)rand.NextSingle() * 2.0f - 1.0f;
         float y = (float)rand.NextSingle() * 2.0f - 1.0f;

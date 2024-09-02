@@ -1,5 +1,6 @@
 ﻿using Arch.Core;
 using Engine.Attributes;
+using Engine.Interfaces;
 using Engine.Services;
 using Engine.Systems;
 using Microsoft.Extensions.DependencyInjection;
