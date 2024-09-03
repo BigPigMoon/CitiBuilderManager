@@ -1,7 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
+using Microsoft.Xna.Framework;
 
-namespace CitiBuilderManager.Services;
+namespace CitiBuilderManager.GameObjects;
 
 public enum BuildingKinds
 {

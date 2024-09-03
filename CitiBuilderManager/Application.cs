@@ -1,13 +1,10 @@
-﻿using Arch.Core;
+﻿using CitiBuilderManager.Extensions;
 using Engine.Attributes;
 using Engine.Interfaces;
-using Engine.Services;
 using Engine.Systems;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using NLog.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,29 +16,15 @@ public class Application : Game
     private ServiceProvider _serviceProvider;
     private readonly GraphicsDeviceManager _graphics;
 
-    private readonly List<ISystem<int>> _startupSystems = [];
-    private readonly List<ISystem<GameTime>> _updateSystems = [];
-    private readonly List<ISystem<GameTime>> _drawSystems = [];
+    private readonly List<ISystem> _startupSystems = [];
+    private readonly List<ISystem> _updateSystems = [];
+    private readonly List<ISystem> _drawSystems = [];
 
     public Application()
     {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-    }
-
-    private void ConfigureServices(IServiceCollection services)
-    {
-        services.AddLogging(builder =>
-        {
-            builder.AddNLog();
-        });
-
-        services.AddSingleton(World.Create());
-
-        services.AddSingleton<IWindowManager>(new WindowManager(GraphicsDevice));
-        services.AddSingleton<IDrawer>(new Drawer(new SpriteBatch(GraphicsDevice)));
-        services.AddSingleton<ILoader>(new Loader(Content));
     }
 
     protected override void Initialize()
@@ -52,7 +35,8 @@ public class Application : Game
         _graphics.ApplyChanges();
 
         var serviceCollection = new ServiceCollection();
-        ConfigureServices(serviceCollection);
+        this.ConfigureServices(serviceCollection);
+        this.ConfigureEngineServices(serviceCollection);
         _serviceProvider = serviceCollection.BuildServiceProvider();
 
         InitializeAutoInjectComponents(_serviceProvider);
@@ -66,7 +50,7 @@ public class Application : Game
 
         foreach (var system in _startupSystems)
         {
-            system.Run(0);
+            system.Run(new GameTime());
         }
     }
 
@@ -74,10 +58,15 @@ public class Application : Game
     {
         base.Update(gameTime);
 
+        _serviceProvider.GetService<IKeyboardInput>().Update();
+        _serviceProvider.GetService<IMouseInput>().Update();
+
         foreach (var system in _updateSystems)
         {
             system.Run(in gameTime);
         }
+
+        _serviceProvider.GetService<ICamera2D>().Update();
     }
 
     protected override void Draw(GameTime gameTime)
@@ -106,19 +95,19 @@ public class Application : Game
             {
                 var parameters = constructor.GetParameters();
                 var dependencies = parameters.Select(p => serviceProvider.GetService(p.ParameterType)).ToArray();
-                var system = constructor.Invoke(dependencies);
+                var system = (ISystem)constructor.Invoke(dependencies);
 
                 if (type.GetCustomAttributes(typeof(OnStartupAttribute), true).Length != 0)
                 {
-                    _startupSystems.Add((ISystem<int>)system);
+                    _startupSystems.Add(system);
                 }
                 else if (type.GetCustomAttributes(typeof(OnDrawAttribute), true).Length != 0)
                 {
-                    _drawSystems.Add((ISystem<GameTime>)system);
+                    _drawSystems.Add(system);
                 }
                 else if (type.GetCustomAttributes(typeof(OnUpdateAttribute), true).Length != 0)
                 {
-                    _updateSystems.Add((ISystem<GameTime>)system);
+                    _updateSystems.Add(system);
                 }
             }
         }

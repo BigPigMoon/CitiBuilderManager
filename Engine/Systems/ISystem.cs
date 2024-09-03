@@ -1,6 +1,8 @@
-﻿namespace Engine.Systems;
+﻿using Microsoft.Xna.Framework;
 
-public interface ISystem<T>
+namespace Engine.Systems;
+
+public interface ISystem
 {
-    void Run(in T state);
+    void Run(in GameTime state);
 }

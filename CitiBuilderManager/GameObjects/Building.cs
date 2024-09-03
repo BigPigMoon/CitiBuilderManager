@@ -1,9 +1,9 @@
-﻿using Engine.Components;
-using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Engine.Components;
+using Microsoft.Xna.Framework;
 
-namespace CitiBuilderManager.Services;
+namespace CitiBuilderManager.GameObjects;
 
 public class Building
 {
@@ -48,12 +48,7 @@ public class Building
 
                 var cubePos = new Vector2(dx, dy);
 
-                var newTransform = new Transform2D()
-                {
-                    Translation = new Vector3(cubePos * imageSize + offset, zLayer),
-                    Rotation = 0,
-                    Scale = cubeScale,
-                };
+                var newTransform = new Transform2D(cubePos * imageSize + offset, 0, cubeScale, zLayer);
 
                 result.Add(newTransform);
             }
@@ -78,7 +73,7 @@ public class Building
         }
     }
 
-    public System.Range GetClearColumns()
+    public Range GetClearColumns()
     {
         int leftBorder = 0;
         int rightBorder = (int)MapWidth;
@@ -130,7 +125,7 @@ public class Building
         return leftBorder..rightBorder;
     }
 
-    public System.Range GetClearRows()
+    public Range GetClearRows()
     {
         int topBorder = 0;
         int bottomBorder = (int)MapHeight;

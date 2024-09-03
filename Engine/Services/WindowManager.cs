@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Engine.Services;
 
-public class WindowManager : IWindowManager
+internal class WindowManager : IWindowManager
 {
     private readonly GraphicsDevice _graphicsDevice;
 

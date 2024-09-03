@@ -1,6 +1,5 @@
 ﻿using Arch.Core;
-using CitiBuilderManager.Services;
-using System;
+using CitiBuilderManager.GameObjects;
 
 namespace Tests.Services
 {

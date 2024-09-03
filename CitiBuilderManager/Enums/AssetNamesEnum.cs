@@ -1,8 +1,6 @@
-﻿using System;
+﻿namespace CitiBuilderManager.Enums;
 
-namespace CitiBuilderManager.Services;
-
-public static class AssetNames
+public static class AssetNamesEnum
 {
     public const string Building = "sprites/building";
     public const string EmptyCard = "sprites/empty_card";

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Engine.Services;
 
-public class Loader(ContentManager content) : ILoader
+internal class Loader(ContentManager content) : ILoader
 {
     private readonly ContentManager _content = content;
 

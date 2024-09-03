@@ -1,2 +1,2 @@
-﻿using var game = new CitiBuilderManager.Application();
-game.Run();
+﻿using var app = new CitiBuilderManager.Application();
+app.Run();
