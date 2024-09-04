@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Arch.Core;
 using Arch.Core.Extensions;
 using CitiBuilderManager.Components;
@@ -12,21 +11,19 @@ using Engine.Attributes;
 using Engine.Components;
 using Engine.Interfaces;
 using Engine.Systems;
-using Microsoft.Extensions.Logging;
 using Microsoft.Xna.Framework;
 
 namespace CitiBuilderManager.Systems;
 
 [AutoInject]
 [OnUpdate]
-public class SetHandCardTranslation(World world, IWindowManager windowManager, ICamera2D camera, ICardManager cardManager, ILogger<SetHandCardTranslation> logger) : ISystem
+public class SetHandCardTranslation(World world, IWindowManager windowManager, ICamera2D camera, ICardManager cardManager) : ISystem
 {
-    private readonly QueryDescription _queryDescription = new QueryDescription().WithAll<SmoothTransform, Sprite, Card>();
+    private readonly QueryDescription _queryDescription = new QueryDescription().WithAll<SmoothTransformComponent, Sprite, CardComponent>();
     private readonly World _world = world;
     private readonly IWindowManager _windowManager = windowManager;
     private readonly ICamera2D _camera = camera;
     private readonly ICardManager _cardManager = cardManager;
-    private readonly ILogger<SetHandCardTranslation> _logger = logger;
 
     public void Run(in GameTime state)
     {
@@ -50,15 +47,15 @@ public class SetHandCardTranslation(World world, IWindowManager windowManager, I
 
         cards.Sort((x, y) =>
         {
-            var xOrder = x.Get<Card>().Order;
-            var yOrder = y.Get<Card>().Order;
+            var xOrder = x.Get<CardComponent>().Order;
+            var yOrder = y.Get<CardComponent>().Order;
 
             return yOrder.CompareTo(xOrder);
         });
 
         for (int i = 0; i < cards.Count; i++)
         {
-            ref var transform = ref cards[i].Get<SmoothTransform>();
+            ref var transform = ref cards[i].Get<SmoothTransformComponent>();
 
             var t = cardNum > 1 ? (float)i / (cardNum - 1) : 0.0f;
 
@@ -74,9 +71,9 @@ public class SetHandCardTranslation(World world, IWindowManager windowManager, I
             transform.Depth = z;
         }
 
-        if (_cardManager.SelectedCard != null && _cardManager.SelectedCard.Value.Has<SmoothTransform>())
+        if (_cardManager.SelectedCard != null && _cardManager.SelectedCard.Value.Has<SmoothTransformComponent>())
         {
-            ref var transform = ref _cardManager.SelectedCard.Value.Get<SmoothTransform>();
+            ref var transform = ref _cardManager.SelectedCard.Value.Get<SmoothTransformComponent>();
             var newPosition = transform.Position;
             newPosition.Y = (_windowManager.ScreenHeight / 2.0f) - (selectedCardSize / 2.0f + _camera.Position).Y;
 

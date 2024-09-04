@@ -1,6 +1,4 @@
-using System;
 using Arch.Core;
-using Arch.Core.Extensions;
 using CitiBuilderManager.Components;
 using CitiBuilderManager.Interfaces;
 using Engine.Attributes;
@@ -15,7 +13,7 @@ namespace CitiBuilderManager.Systems;
 [OnUpdate]
 public class SetCardSelected(World world, IMouseInput mouseInput, ICardManager cardManager) : ISystem
 {
-    public readonly QueryDescription _cardQuery = new QueryDescription().WithAll<Card, BoxCollider, Transform2D>();
+    public readonly QueryDescription _cardQuery = new QueryDescription().WithAll<CardComponent, BoxColliderComponent, Transform2D>();
     private readonly World _world = world;
     private readonly IMouseInput _mouseInput = mouseInput;
     private readonly ICardManager _cardManager = cardManager;
@@ -30,7 +28,7 @@ public class SetCardSelected(World world, IMouseInput mouseInput, ICardManager c
         Entity? hoveredCard = null;
         var maxZ = float.NegativeInfinity;
 
-        _world.Query(in _cardQuery, (Entity entity, ref BoxCollider collider, ref Transform2D transform) =>
+        _world.Query(in _cardQuery, (Entity entity, ref BoxColliderComponent collider, ref Transform2D transform) =>
         {
             var mousePos = _mouseInput.GetMousePosition();
 

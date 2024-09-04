@@ -16,7 +16,7 @@ namespace CitiBuilderManager.Systems;
 [OnUpdate]
 public class DespawnRandomCard(World world, IKeyboardInput keyboardInput, ICardManager cardManager) : ISystem
 {
-    private readonly QueryDescription _query = new QueryDescription().WithAll<Card>();
+    private readonly QueryDescription _query = new QueryDescription().WithAll<CardComponent>();
     private readonly World _world = world;
     private readonly IKeyboardInput _keyboardInput = keyboardInput;
     private readonly ICardManager _cardManager = cardManager;

@@ -11,7 +11,7 @@ namespace CitiBuilderManager.Systems;
 [OnUpdate]
 internal class SmoothMovement(World world) : ISystem
 {
-    private readonly QueryDescription _desc = new QueryDescription().WithAll<Transform2D, SmoothTransform>();
+    private readonly QueryDescription _desc = new QueryDescription().WithAll<Transform2D, SmoothTransformComponent>();
     private readonly World _world = world;
     private readonly float _animationSpeed = 7.0f;
 
@@ -19,7 +19,7 @@ internal class SmoothMovement(World world) : ISystem
     {
         var gameTime = state;
 
-        _world.Query(in _desc, (ref Transform2D transform, ref SmoothTransform smoothTransform) =>
+        _world.Query(in _desc, (ref Transform2D transform, ref SmoothTransformComponent smoothTransform) =>
         {
             float t = (float)gameTime.ElapsedGameTime.TotalSeconds * _animationSpeed;
 

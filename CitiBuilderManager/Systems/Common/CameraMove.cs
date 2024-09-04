@@ -13,8 +13,8 @@ namespace CitiBuilderManager.Systems;
 [OnUpdate]
 internal class CameraMove(World world, ICamera2D camera, IKeyboardInput keyboardInput) : ISystem
 {
-    private readonly QueryDescription _queryUI = new QueryDescription().WithAll<Transform2D, UIComponent>().WithNone<SmoothTransform>();
-    private readonly QueryDescription _queryAnimatedUI = new QueryDescription().WithAll<Transform2D, SmoothTransform, UIComponent>();
+    private readonly QueryDescription _queryUI = new QueryDescription().WithAll<Transform2D, UIComponent>().WithNone<SmoothTransformComponent>();
+    private readonly QueryDescription _queryAnimatedUI = new QueryDescription().WithAll<Transform2D, SmoothTransformComponent, UIComponent>();
     private readonly World _world = world;
     private readonly ICamera2D _camera = camera;
     private readonly IKeyboardInput _keyboardInput = keyboardInput;
@@ -47,7 +47,7 @@ internal class CameraMove(World world, ICamera2D camera, IKeyboardInput keyboard
             transform.Position += deltaMoving;
         });
 
-        _world.Query(in _queryAnimatedUI, (ref Transform2D transform, ref SmoothTransform smoothTransform) =>
+        _world.Query(in _queryAnimatedUI, (ref Transform2D transform, ref SmoothTransformComponent smoothTransform) =>
         {
             transform.Position += deltaMoving;
             smoothTransform.Position += deltaMoving;

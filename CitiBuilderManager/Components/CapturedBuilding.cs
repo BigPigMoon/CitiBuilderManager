@@ -1,3 +1,3 @@
 ﻿namespace CitiBuilderManager.Components;
 
-public class CapturedBuilding { }
+public class CapturedBuildingComponent { }

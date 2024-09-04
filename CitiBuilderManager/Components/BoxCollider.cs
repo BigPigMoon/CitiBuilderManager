@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CitiBuilderManager.Components;
 
-public class BoxCollider(Vector2 center, float rotation, Vector2 halfSize)
+public class BoxColliderComponent(Vector2 center, float rotation, Vector2 halfSize)
 {
     public Vector2 Center { get; set; } = center;
     public float Rotation { get; set; } = rotation;

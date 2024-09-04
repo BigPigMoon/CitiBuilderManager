@@ -2,7 +2,7 @@
 
 namespace CitiBuilderManager.Components;
 
-internal class BlockPosition
+internal class BlockPositionComponent
 {
     public Vector2 Position { get; set; }
 }

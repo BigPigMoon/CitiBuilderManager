@@ -2,7 +2,7 @@
 
 namespace CitiBuilderManager.Components;
 
-public class SmoothTransform(Vector2 translation, float rotation, float scale, float depth)
+public class SmoothTransformComponent(Vector2 translation, float rotation, float scale, float depth)
 {
     public Vector2 Position { get; set; } = translation;
     public float Rotation { get; set; } = rotation;

@@ -24,14 +24,14 @@ public class SetCardCaptured(IMouseInput mouseInput, ICardManager cardManager) :
         if (_mouseInput.IsKeyPressed(Engine.Enums.MouseButtonEnum.Left))
         {
             _cardManager.CapturedCard = _cardManager.SelectedCard;
-            _cardManager.CapturedCard.Value.Remove<SmoothTransform>();
+            _cardManager.CapturedCard.Value.Remove<SmoothTransformComponent>();
         }
         else
         {
             if (_cardManager.CapturedCard != null)
             {
                 var transform = _cardManager.CapturedCard.Value.Get<Transform2D>();
-                _cardManager.CapturedCard.Value.Add(new SmoothTransform(transform.Position, transform.Rotation, transform.Scale, transform.Depth));
+                _cardManager.CapturedCard.Value.Add(new SmoothTransformComponent(transform.Position, transform.Rotation, transform.Scale, transform.Depth));
             }
             _cardManager.CapturedCard = null;
         }

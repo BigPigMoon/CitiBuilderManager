@@ -1,8 +1,6 @@
-﻿using CitiBuilderManager.Enums;
+﻿namespace CitiBuilderManager.Components;
 
-namespace CitiBuilderManager.Components;
-
-internal class Card(int order)
+internal class CardComponent(int order)
 {
     public int Order { get; set; } = order;
 };
