@@ -50,7 +50,7 @@ internal class CameraMove(World world, ICamera2D camera, IKeyboardInput keyboard
         _world.Query(in _queryAnimatedUI, (ref Transform2D transform, ref SmoothTransform smoothTransform) =>
         {
             transform.Position += deltaMoving;
-            smoothTransform.Translation += deltaMoving;
+            smoothTransform.Position += deltaMoving;
         });
     }
 }

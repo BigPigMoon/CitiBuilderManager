@@ -14,6 +14,6 @@ public static class ApplicationExtensions
             builder.AddNLog();
         });
 
-        services.AddSingleton<ICardSpawner, CardSpawner>();
+        services.AddSingleton<ICardManager, CardManager>();
     }
 }

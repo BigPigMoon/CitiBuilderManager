@@ -14,7 +14,7 @@ using CitiBuilderManager.Components;
 namespace CitiBuilderManager.Systems;
 
 [AutoInject]
-[OnStartup]
+// [OnStartup]
 internal class SpawnCube(World world, ILoader loader, ILogger<SpawnCube> logger) : ISystem
 {
     private readonly World _world = world;
@@ -27,7 +27,7 @@ internal class SpawnCube(World world, ILoader loader, ILogger<SpawnCube> logger)
 
         new SpriteBundle(
             spriteComponent: cubeSprite,
-            transformComponent: new Transform2D(Vector2.Zero, 0, 0.3f, 1),
+            transformComponent: new Transform2D(Vector2.Zero, 0, 0.3f, 3),
             visibilityComponent: Visibility.Visible
             ).Spawn(_world);
 

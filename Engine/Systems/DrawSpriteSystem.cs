@@ -1,4 +1,5 @@
-﻿using Arch.Core;
+﻿using System.Text;
+using Arch.Core;
 using Engine.Attributes;
 using Engine.Components;
 using Engine.Interfaces;
@@ -18,9 +19,9 @@ public sealed class DrawSpriteSystem(World world, IDrawer drawer, ICamera2D came
 
     public void Run(in GameTime state)
     {
-        _world.Query(in _spriteQuery, (ref Sprite sprite, ref Transform2D transform) =>
+        _drawer.Begin(transformMatrix: _camera.Transform, sortMode: SpriteSortMode.FrontToBack);
+        _world.Query(in _spriteQuery, (Entity entity, ref Sprite sprite, ref Transform2D transform) =>
         {
-            _drawer.Begin(transformMatrix: _camera.Transform);
 
             SpriteEffects spriteEffect = SpriteEffects.None;
             spriteEffect |= sprite.FlipX ? SpriteEffects.FlipHorizontally : 0;
@@ -30,8 +31,7 @@ public sealed class DrawSpriteSystem(World world, IDrawer drawer, ICamera2D came
 
             // TODO: add source rect and origin
             _drawer.Draw(sprite.Texture, transform.Position, null, sprite.Color, transform.Rotation, origin, transform.Scale, spriteEffect, transform.Depth / 1000);
-
-            _drawer.End();
         });
+        _drawer.End();
     }
 }

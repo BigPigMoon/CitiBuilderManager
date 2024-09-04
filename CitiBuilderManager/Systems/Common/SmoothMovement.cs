@@ -4,7 +4,6 @@ using Engine.Attributes;
 using Engine.Components;
 using Engine.Systems;
 using Microsoft.Xna.Framework;
-using System;
 
 namespace CitiBuilderManager.Systems;
 
@@ -14,7 +13,7 @@ internal class SmoothMovement(World world) : ISystem
 {
     private readonly QueryDescription _desc = new QueryDescription().WithAll<Transform2D, SmoothTransform>();
     private readonly World _world = world;
-    private readonly float _animationSpeed = 5.0f;
+    private readonly float _animationSpeed = 7.0f;
 
     public void Run(in GameTime state)
     {
@@ -24,10 +23,10 @@ internal class SmoothMovement(World world) : ISystem
         {
             float t = (float)gameTime.ElapsedGameTime.TotalSeconds * _animationSpeed;
 
-            var translation = Vector2.Lerp(transform.Position, smoothTransform.Translation, t);
-            var rotation = Single.Lerp(transform.Rotation, smoothTransform.Rotation, t);
-            var scale = Single.Lerp(transform.Scale, smoothTransform.Scale, t);
-            var depth = Single.Lerp(transform.Depth, smoothTransform.Depth, t);
+            var translation = Vector2.Lerp(transform.Position, smoothTransform.Position, t);
+            var rotation = float.Lerp(transform.Rotation, smoothTransform.Rotation, t);
+            var scale = float.Lerp(transform.Scale, smoothTransform.Scale, t);
+            var depth = float.Lerp(transform.Depth, smoothTransform.Depth, t);
 
             transform = new Transform2D(translation, rotation, scale, depth);
         });

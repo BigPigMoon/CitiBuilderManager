@@ -9,9 +9,9 @@ namespace CitiBuilderManager.Systems;
 
 [AutoInject]
 [OnUpdate]
-internal class SpawnCardOnKeyDown(ICardSpawner spawner, IKeyboardInput keyboardInput) : ISystem
+internal class SpawnCardOnKeyDown(ICardManager spawner, IKeyboardInput keyboardInput) : ISystem
 {
-    private readonly ICardSpawner _spawner = spawner;
+    private readonly ICardManager _spawner = spawner;
     private readonly IKeyboardInput _keyboardInput = keyboardInput;
 
     public void Run(in GameTime gameTime)
