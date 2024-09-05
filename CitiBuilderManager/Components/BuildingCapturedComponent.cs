@@ -2,4 +2,4 @@ using System;
 
 namespace CitiBuilderManager.Components;
 
-public class BuildingCapturedComponent { }
+public class CapturedCubeComponent { }

@@ -20,7 +20,7 @@ public class BuildingManager(World world, ILoader loader, ILogger<BuildingManage
     private readonly ILoader _loader = loader;
     private readonly ILogger<BuildingManager> _logger = logger;
 
-    public IEnumerable<Vector2> GetCubesPosition(Building building)
+    public IEnumerable<Vector2> GetCubesPosition(BuildingGameObject building)
     {
         var result = new List<Vector2>();
 
@@ -39,12 +39,12 @@ public class BuildingManager(World world, ILoader loader, ILogger<BuildingManage
                     continue;
                 }
 
-                var dx = mapWidht % 2 == 0 ? 0.5f : 0.0f;
-                var dy = mapHeight % 2 == 0 ? 0.5f : 0.0f;
+                var dx = 0.5f;// mapWidht % 2 == 0 ? 0.5f : 0.0f;
+                var dy = 0.5f;// mapHeight % 2 == 0 ? 0.5f : 0.0f;
 
                 var cubePos = new Vector2(
                     x - mapWidht / 2.0f + dx,
-                    mapHeight / 2.0f - y - dy
+                    y - mapHeight / 2.0f + dy
                 );
                 result.Add(cubePos);
             }
@@ -53,7 +53,7 @@ public class BuildingManager(World world, ILoader loader, ILogger<BuildingManage
         return result;
     }
 
-    public IEnumerable<Entity> SpawnBuildingCubes(Building building, float cubeScale, Vector2 offset, float zLayer)
+    public IEnumerable<Entity> SpawnBuildingCubes(BuildingGameObject building, float cubeScale, Vector2 offset, float zLayer)
     {
         var cubesPosition = GetCubesPosition(building);
         var result = new List<Entity>();

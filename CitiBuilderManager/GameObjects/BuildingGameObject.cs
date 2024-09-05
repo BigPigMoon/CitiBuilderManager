@@ -2,7 +2,7 @@
 
 namespace CitiBuilderManager.GameObjects;
 
-public class Building
+public class BuildingGameObject
 {
     private const uint MapWidth = 3;
     private const uint MapHeight = 3;
@@ -10,12 +10,12 @@ public class Building
     public bool[,] Map { get; private set; } = new bool[MapWidth, MapWidth];
     private readonly BuildingKind _kind = new();
 
-    public Building()
+    public BuildingGameObject()
     {
         GenerateMap();
     }
 
-    public Building(bool[,] map, BuildingKind kind)
+    public BuildingGameObject(bool[,] map, BuildingKind kind)
     {
         Map = map;
         _kind = kind;

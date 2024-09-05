@@ -7,9 +7,9 @@ namespace Tests.Services
     {
         private World _world = World.Create();
 
-        private Building CreateNewBuildingFromMap(bool[,] map)
+        private BuildingGameObject CreateNewBuildingFromMap(bool[,] map)
         {
-            return new Building(map, new BuildingKind());
+            return new BuildingGameObject(map, new BuildingKind());
         }
 
         [Fact]

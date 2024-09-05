@@ -7,6 +7,6 @@ namespace CitiBuilderManager.Interfaces;
 
 public interface IBuildingManager
 {
-    IEnumerable<Vector2> GetCubesPosition(Building building);
-    IEnumerable<Entity> SpawnBuildingCubes(Building building, float cubeScale, Vector2 offset, float zLayer);
+    IEnumerable<Vector2> GetCubesPosition(BuildingGameObject building);
+    IEnumerable<Entity> SpawnBuildingCubes(BuildingGameObject building, float cubeScale, Vector2 offset, float zLayer);
 }

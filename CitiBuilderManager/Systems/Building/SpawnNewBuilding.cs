@@ -1,5 +1,6 @@
 using Arch.Core.Extensions;
 using CitiBuilderManager.Components;
+using CitiBuilderManager.Constants;
 using CitiBuilderManager.GameObjects;
 using CitiBuilderManager.Interfaces;
 using Engine.Attributes;
@@ -16,13 +17,13 @@ public class SpawnNewBuilding(IBuildingManager buildingManager) : ISystem
 
     public void Run(in GameTime state)
     {
-        var building = new Building();
+        var building = new BuildingGameObject();
 
-        var cubes = _buildingManager.SpawnBuildingCubes(building, 0.1f, Vector2.Zero, 20f);
+        var cubes = _buildingManager.SpawnBuildingCubes(building, TextureSizeConstants.WorldBuildingScale, Vector2.Zero, 20f);
 
         foreach (var cube in cubes)
         {
-            cube.Add<BuildingCapturedComponent>();
+            cube.Add<CapturedCubeComponent>();
         }
     }
 }
