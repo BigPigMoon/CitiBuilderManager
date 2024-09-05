@@ -58,14 +58,13 @@ public class Application : Game
     {
         base.Update(gameTime);
 
-        _serviceProvider.GetService<IKeyboardInput>().Update();
-        _serviceProvider.GetService<IMouseInput>().Update();
-
         foreach (var system in _updateSystems)
         {
             system.Run(in gameTime);
         }
 
+        _serviceProvider.GetService<IKeyboardInput>().Update();
+        _serviceProvider.GetService<IMouseInput>().Update();
         _serviceProvider.GetService<ICamera2D>().Update();
     }
 

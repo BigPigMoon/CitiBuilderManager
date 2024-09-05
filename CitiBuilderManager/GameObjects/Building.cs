@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Engine.Components;
-using Microsoft.Xna.Framework;
 
 namespace CitiBuilderManager.GameObjects;
 
@@ -10,7 +7,7 @@ public class Building
     private const uint MapWidth = 3;
     private const uint MapHeight = 3;
 
-    private readonly bool[,] _map = new bool[MapWidth, MapWidth];
+    public bool[,] Map { get; private set; } = new bool[MapWidth, MapWidth];
     private readonly BuildingKind _kind = new();
 
     public Building()
@@ -20,41 +17,8 @@ public class Building
 
     public Building(bool[,] map, BuildingKind kind)
     {
-        _map = map;
+        Map = map;
         _kind = kind;
-    }
-
-    public IEnumerable<Transform2D> SpawnBuildingCubes(Vector2 imageSize, Vector2 offset, float zLayer, float cubeScale)
-    {
-        var result = new List<Transform2D>();
-
-        var widthRange = GetClearColumns();
-        var mapWidht = widthRange.End.Value - widthRange.Start.Value;
-
-        var heightRange = GetClearRows();
-        var mapHeight = heightRange.End.Value - heightRange.Start.Value;
-
-        for (var y = 0; y < mapHeight; y++)
-        {
-            for (var x = 0; x < mapWidht; x++)
-            {
-                if (!_map[y + heightRange.Start.Value, x + widthRange.Start.Value])
-                {
-                    continue;
-                }
-
-                var dx = mapWidht % 2 == 0 ? 0.5f : 0.0f;
-                var dy = mapHeight % 2 == 0 ? 0.5f : 0.0f;
-
-                var cubePos = new Vector2(dx, dy);
-
-                var newTransform = new Transform2D(cubePos * imageSize + offset, 0, cubeScale, zLayer);
-
-                result.Add(newTransform);
-            }
-        }
-
-        return result;
     }
 
     private void GenerateMap()
@@ -67,7 +31,7 @@ public class Building
             {
                 for (int j = 0; j < MapWidth; j++)
                 {
-                    _map[i, j] = rnd.NextDouble() == 0.5;
+                    Map[i, j] = rnd.NextDouble() >= 0.5;
                 }
             }
         }
@@ -83,7 +47,7 @@ public class Building
             var isClear = true;
             for (uint j = 0; j < MapHeight; j++)
             {
-                if (_map[j, i])
+                if (Map[j, i])
                 {
                     isClear = false;
                     break;
@@ -105,7 +69,7 @@ public class Building
             var isClear = true;
             for (uint j = 0; j < MapHeight; j++)
             {
-                if (_map[j, i])
+                if (Map[j, i])
                 {
                     isClear = false;
                     break;
@@ -135,7 +99,7 @@ public class Building
             var isClear = true;
             for (uint j = 0; j < MapWidth; j++)
             {
-                if (_map[i, j])
+                if (Map[i, j])
                 {
                     isClear = false;
                     break;
@@ -157,7 +121,7 @@ public class Building
             var isClear = true;
             for (uint j = 0; j < MapWidth; j++)
             {
-                if (_map[i, j])
+                if (Map[i, j])
                 {
                     isClear = false;
                     break;
@@ -183,7 +147,7 @@ public class Building
         {
             for (int j = 0; j < MapWidth; j++)
             {
-                if (_map[i, j])
+                if (Map[i, j])
                 {
                     return false;
                 }

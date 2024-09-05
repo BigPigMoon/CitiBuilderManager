@@ -17,7 +17,7 @@ public enum BuildingKinds
 
 public class BuildingKind
 {
-    public readonly BuildingKinds Kind;
+    public BuildingKinds Kind { get; private set; }
 
     public BuildingKind()
     {
