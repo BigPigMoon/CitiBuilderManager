@@ -4,15 +4,22 @@ namespace CitiBuilderManager.GameObjects;
 
 public class BuildingGameObject
 {
+    public bool[,] Map { get; private set; } = new bool[MapWidth, MapWidth];
+    public int Widht { get; private set; }
+    public int Height { get; private set; }
     private const uint MapWidth = 3;
     private const uint MapHeight = 3;
-
-    public bool[,] Map { get; private set; } = new bool[MapWidth, MapWidth];
     private readonly BuildingKind _kind = new();
 
     public BuildingGameObject()
     {
         GenerateMap();
+
+        var widthRange = GetClearColumns();
+        Widht = widthRange.End.Value - widthRange.Start.Value;
+
+        var heightRange = GetClearRows();
+        Height = heightRange.End.Value - heightRange.Start.Value;
     }
 
     public BuildingGameObject(bool[,] map, BuildingKind kind)

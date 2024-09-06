@@ -13,7 +13,7 @@ internal class SmoothMovement(World world) : ISystem
 {
     private readonly QueryDescription _desc = new QueryDescription().WithAll<Transform2D, SmoothTransformComponent>();
     private readonly World _world = world;
-    private readonly float _animationSpeed = 7.0f;
+    private readonly float _animationSpeed = 9.0f;
 
     public void Run(in GameTime state)
     {

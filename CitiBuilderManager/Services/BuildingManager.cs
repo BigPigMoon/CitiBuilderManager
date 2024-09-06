@@ -63,13 +63,13 @@ public class BuildingManager(World world, ILoader loader, ILogger<BuildingManage
         foreach (var position in cubesPosition)
         {
             var cube = new SpriteBundle(
-                spriteComponent: new Sprite(cubeTexture),
+                spriteComponent: new Sprite(cubeTexture) { Color = Color.MonoGameOrange },
                 transformComponent: new Transform2D(position * imageSize + offset, 0, cubeScale, zLayer),
                 visibilityComponent: Visibility.Visible
             ).Spawn(_world);
-            cube.Add(new CubePositionComponent(position));
+            // cube.Add(new CubePositionComponent(position));
 
-            _logger.LogInformation("cube position {}", position);
+            // _logger.LogInformation("cube position {}", position);
 
             result.Add(cube);
         }

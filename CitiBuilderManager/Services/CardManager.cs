@@ -4,6 +4,7 @@ using Arch.Core.Extensions;
 using CitiBuilderManager.Components;
 using CitiBuilderManager.Constants;
 using CitiBuilderManager.Enums;
+using CitiBuilderManager.GameObjects;
 using CitiBuilderManager.Interfaces;
 using Engine.Bundles;
 using Engine.Components;
@@ -14,12 +15,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CitiBuilderManager.Services;
 
-public class CardManager(World world, ILoader loader, IWindowManager window, ICamera2D camera, ILogger<CardManager> logger) : ICardManager
+public class CardManager(World world, ILoader loader, IWindowManager window, ICamera2D camera, IBuildingManager buildingManager, ILogger<CardManager> logger) : ICardManager
 {
     private readonly QueryDescription _cardQuery = new QueryDescription().WithAll<CardComponent>();
     private readonly World _world = world;
     private readonly ILoader _loader = loader;
     private readonly ICamera2D _camera = camera;
+    private readonly IBuildingManager _buildingManager = buildingManager;
     private readonly IWindowManager _window = window;
     private readonly ILogger<CardManager> _logger = logger;
 
@@ -50,6 +52,13 @@ public class CardManager(World world, ILoader loader, IWindowManager window, ICa
         card.Add(new BoxColliderComponent(spawnPoint, rotation, halfSize));
         card.Add(new SmoothTransformComponent(spawnPoint, rotation, TextureSizeConstants.CardSpriteSize, spawnZ));
         card.Add(new UIComponent());
+
+        var building = new BuildingGameObject();
+        var cubes = _buildingManager.SpawnBuildingCubes(building, 0.15f, new Vector2(0f, -100f), 0.1f);
+        foreach (var cube in cubes)
+        {
+            cube.Add(new Child(card));
+        }
 
         return card;
     }
