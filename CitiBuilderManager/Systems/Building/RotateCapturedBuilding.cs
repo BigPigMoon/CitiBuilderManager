@@ -1,5 +1,5 @@
-using Arch.Core;
-using CitiBuilderManager.Components;
+using Arch.Core.Extensions;
+using CitiBuilderManager.Interfaces;
 using Engine.Attributes;
 using Engine.Components;
 using Engine.Interfaces;
@@ -11,20 +11,17 @@ namespace CitiBuilderManager.Systems;
 
 [AutoInject]
 [OnUpdate]
-public class RotateCapturedBuilding(World world, IKeyboardInput keyboardInput) : ISystem
+public class RotateCapturedBuilding(IKeyboardInput keyboardInput, IBuildingManager buildingManager) : ISystem
 {
-    private readonly QueryDescription _query = new QueryDescription().WithAll<CapturedBuildingComponent, Transform2D>();
-    private readonly World _world = world;
     private readonly IKeyboardInput _keyboardInput = keyboardInput;
+    private readonly IBuildingManager _buildingManager = buildingManager;
 
     public void Run(in GameTime state)
     {
-        if (_keyboardInput.IsKeyJustPressed(Keys.R))
+        if (_buildingManager.CapturedBuilding != null && _keyboardInput.IsKeyJustPressed(Keys.R))
         {
-            _world.Query(in _query, (ref Transform2D transform) =>
-            {
-                transform.Rotation += float.DegreesToRadians(90f);
-            });
+            ref var transform = ref _buildingManager.CapturedBuilding.Value.Get<Transform2D>();
+            transform.Rotation += float.DegreesToRadians(90f);
         }
     }
 }

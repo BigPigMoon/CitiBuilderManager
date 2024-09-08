@@ -12,7 +12,7 @@ namespace Engine.Systems;
 [OnDraw]
 public sealed class DrawSpriteSystem(World world, IDrawer drawer, ICamera2D camera) : ISystem
 {
-    private readonly QueryDescription _spriteQuery = new QueryDescription().WithAll<Sprite, Visibility, Transform2D>();
+    private readonly QueryDescription _spriteQuery = new QueryDescription().WithAll<Sprite, VisibilityComponent, Transform2D>();
     private readonly IDrawer _drawer = drawer;
     private readonly ICamera2D _camera = camera;
     private readonly World _world = world;
@@ -20,9 +20,9 @@ public sealed class DrawSpriteSystem(World world, IDrawer drawer, ICamera2D came
     public void Run(in GameTime state)
     {
         _drawer.Begin(transformMatrix: _camera.Transform, sortMode: SpriteSortMode.FrontToBack);
-        _world.Query(in _spriteQuery, (Entity entity, ref Sprite sprite, ref Transform2D transform, ref Visibility visibility) =>
+        _world.Query(in _spriteQuery, (Entity entity, ref Sprite sprite, ref Transform2D transform, ref VisibilityComponent visibility) =>
         {
-            if (visibility == Visibility.Hidden)
+            if (visibility.Visibility == Visibility.Hidden)
                 return;
 
             SpriteEffects spriteEffect = SpriteEffects.None;

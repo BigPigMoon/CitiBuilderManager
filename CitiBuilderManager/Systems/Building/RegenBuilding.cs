@@ -17,7 +17,6 @@ namespace CitiBuilderManager.Systems;
 [OnUpdate]
 public class RegenBuilding(World world, IBuildingManager buildingManager, IKeyboardInput keyboardInput, IMouseInput mouseInput) : ISystem
 {
-    private readonly QueryDescription _capturedBuildingQuery = new QueryDescription().WithAll<CapturedBuildingComponent>();
     private readonly QueryDescription _childrenQuery = new QueryDescription().WithAll<Child>();
     private readonly World _world = world;
     private readonly IBuildingManager _buildingManager = buildingManager;
@@ -28,31 +27,8 @@ public class RegenBuilding(World world, IBuildingManager buildingManager, IKeybo
     {
         if (_keyboardInput.IsKeyJustPressed(Keys.B))
         {
-            _world.Query(_capturedBuildingQuery, (Entity capturedBuilding) =>
-            {
-                _world.Query(in _childrenQuery, (Entity entity, ref Child child) =>
-                {
-                    if (child.Parent == capturedBuilding)
-                    {
-                        entity.Remove<Child>();
-                    }
-                });
-                _world.Destroy(capturedBuilding);
-            });
-
             var building = new BuildingGameObject();
-            var cubes = _buildingManager.SpawnBuildingCubes(building, TextureSizeConstants.WorldBuildingScale, Vector2.Zero, 20f);
-
-            var capturedBuildingComponent = _world.Create(
-                    new Transform2D(_mouseInput.GetMousePosition().ToVector2(), 0, 1f, 20f),
-                    new CapturedBuildingComponent(),
-                    new BuildingComponent(building.Widht, building.Height)
-                );
-
-            foreach (var cube in cubes)
-            {
-                cube.Add(new Child(capturedBuildingComponent));
-            }
+            _buildingManager.SpawnCapturedBuilding(building, _mouseInput.GetMousePosition().ToVector2());
         }
     }
 }

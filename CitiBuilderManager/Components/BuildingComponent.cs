@@ -1,7 +1,8 @@
+using CitiBuilderManager.GameObjects;
+
 namespace CitiBuilderManager.Components;
 
-public class BuildingComponent(int widht, int height)
+public class BuildingComponent(BuildingGameObject building)
 {
-    public int BuildingWidth { get; set; } = widht;
-    public int BuildingHeight { get; set; } = height;
+    public BuildingGameObject Building { get; set; } = building;
 }

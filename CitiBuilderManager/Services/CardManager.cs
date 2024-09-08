@@ -45,7 +45,7 @@ public class CardManager(World world, ILoader loader, IWindowManager window, ICa
         var card = new SpriteBundle(
             spriteComponent: new Sprite(texture),
             transformComponent: new Transform2D(spawnPoint, rotation, TextureSizeConstants.CardSpriteSize, spawnZ),
-            visibilityComponent: Visibility.Visible
+            visibilityComponent: new VisibilityComponent()
         ).Spawn(_world);
 
         card.Add(new CardComponent(count + 1));
@@ -55,6 +55,8 @@ public class CardManager(World world, ILoader loader, IWindowManager window, ICa
 
         var building = new BuildingGameObject();
         var cubes = _buildingManager.SpawnBuildingCubes(building, 0.15f, new Vector2(0f, -100f), 0.1f);
+
+        card.Add(new BuildingComponent(building));
         foreach (var cube in cubes)
         {
             cube.Add(new Child(card));

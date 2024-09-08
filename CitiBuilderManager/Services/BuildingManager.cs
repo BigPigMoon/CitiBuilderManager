@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Arch.Core;
 using Arch.Core.Extensions;
 using CitiBuilderManager.Components;
+using CitiBuilderManager.Constants;
 using CitiBuilderManager.Enums;
 using CitiBuilderManager.GameObjects;
 using CitiBuilderManager.Interfaces;
@@ -16,6 +17,8 @@ namespace CitiBuilderManager.Services;
 
 public class BuildingManager(World world, ILoader loader, ILogger<BuildingManager> logger) : IBuildingManager
 {
+    public Entity? CapturedBuilding { get; set; }
+    private readonly QueryDescription _childrenQuery = new QueryDescription().WithAll<Child>();
     private readonly World _world = world;
     private readonly ILoader _loader = loader;
     private readonly ILogger<BuildingManager> _logger = logger;
@@ -39,8 +42,8 @@ public class BuildingManager(World world, ILoader loader, ILogger<BuildingManage
                     continue;
                 }
 
-                var dx = 0.5f;// mapWidht % 2 == 0 ? 0.5f : 0.0f;
-                var dy = 0.5f;// mapHeight % 2 == 0 ? 0.5f : 0.0f;
+                var dx = 0.5f;
+                var dy = 0.5f;
 
                 var cubePos = new Vector2(
                     x - mapWidht / 2.0f + dx,
@@ -65,15 +68,43 @@ public class BuildingManager(World world, ILoader loader, ILogger<BuildingManage
             var cube = new SpriteBundle(
                 spriteComponent: new Sprite(cubeTexture) { Color = Color.MonoGameOrange },
                 transformComponent: new Transform2D(position * imageSize + offset, 0, cubeScale, zLayer),
-                visibilityComponent: Visibility.Visible
+                visibilityComponent: new VisibilityComponent()
             ).Spawn(_world);
-            // cube.Add(new CubePositionComponent(position));
-
-            // _logger.LogInformation("cube position {}", position);
 
             result.Add(cube);
         }
 
         return result;
+    }
+
+    public Entity? SpawnCapturedBuilding(BuildingGameObject building, Vector2 position)
+    {
+        var cubes = SpawnBuildingCubes(building, TextureSizeConstants.WorldBuildingScale, Vector2.Zero, 20f);
+
+        CapturedBuilding = _world.Create(
+                new Transform2D(position, 0, 1f, 20f),
+                new BuildingComponent(building)
+            );
+
+        foreach (var cube in cubes)
+        {
+            cube.Add(new Child(CapturedBuilding.Value));
+        }
+
+        return CapturedBuilding;
+    }
+
+    public void DespawnCapturedBuilding()
+    {
+        CapturedBuilding = null;
+    }
+
+    public void DespawnCapturedBuildingWithChildren()
+    {
+        if (CapturedBuilding != null)
+        {
+            _world.Destroy(CapturedBuilding.Value);
+        }
+        CapturedBuilding = null;
     }
 }

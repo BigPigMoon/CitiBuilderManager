@@ -16,5 +16,6 @@ public static class ApplicationExtensions
 
         services.AddSingleton<ICardManager, CardManager>();
         services.AddSingleton<IBuildingManager, BuildingManager>();
+        services.AddSingleton<IMapManager, MapManager>();
     }
 }

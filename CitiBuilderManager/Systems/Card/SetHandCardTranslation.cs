@@ -42,7 +42,7 @@ public class SetHandCardTranslation(World world, IWindowManager windowManager, I
         var cardSize = textureSize * TextureSizeConstants.CardSpriteSize;
         var selectedCardSize = textureSize * TextureSizeConstants.SelectedCardSpriteSize;
 
-        var halfTotalWidth = GetHalfTotalWidth(cardNum, cardSize.X, _cardManager.SelectedCard != null);
+        var halfTotalWidth = GetHalfTotalWidth(cardNum, cardSize.X, _cardManager.SelectedCard != null && _cardManager.CapturedCard == null);
         var halfTotalRotation = GetHalfTotalRotation(cardNum);
 
         cards.Sort((x, y) =>
@@ -75,7 +75,7 @@ public class SetHandCardTranslation(World world, IWindowManager windowManager, I
         {
             ref var transform = ref _cardManager.SelectedCard.Value.Get<SmoothTransformComponent>();
             var newPosition = transform.Position;
-            newPosition.Y = (_windowManager.ScreenHeight / 2.0f) - (selectedCardSize / 2.0f + _camera.Position).Y;
+            newPosition.Y = (_windowManager.ScreenHeight / 2.0f) - (selectedCardSize / 2.0f - _camera.Position).Y;
 
             transform.Position = newPosition;
             transform.Scale = TextureSizeConstants.SelectedCardSpriteSize;
@@ -86,7 +86,7 @@ public class SetHandCardTranslation(World world, IWindowManager windowManager, I
 
     private static float GetHalfTotalWidth(int cardNum, float cardWidth, bool containSelected)
     {
-        var totalWidth = (cardNum - 1) * (cardWidth * 0.8f) * (containSelected ? 1.1f : 1.0f);
+        var totalWidth = (cardNum - 1) * (cardWidth * 0.8f) * (containSelected ? 1.15f : 1.0f);
         return totalWidth / 2.0f;
     }
 
